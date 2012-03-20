@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Demo</title>
+    <script src="jquery171.min.js"></script>
+    <style type="text/css">
+    .body{
+      width: 960px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    #calc_box{
+      width: 600px;
+      height: 300px;
+      border: 2px solid #000;
+      padding: 20px;
+    }
+    </style>
+  </head>
+  <body>
+    <div id="calc_box">
+      <div id="left"></div>
+      <div id="type"></div>
+      <div id="right"></div>
+      <div id="equals">=</div>
+      <input type="text" name="answer" id="answer" tabindex=1/>
+    </div>
+    <script type="text/javascript">
+      var first, second, answer;
+
+      function getRandomNumber(){
+        return Math.round(Math.random(10) * 10);
+      };
+
+      function getRandomSymbol(){
+        switch(getRandomNumber()){
+          case 1
+            return "+";
+            break;
+          case 6:
+            return "*";
+            break;
+          default:
+            return "-";
+        }
+      }
+
+      function setup(){
+        first = getRandomNumber();
+        second = getRandomNumber();
+        answer = first + second;
+        $("#left").html(first);
+        $("#type").html("+");
+        $("#right").html(second);
+      }
+
+      setup();
+
+
+      $("#answer").focus();
+      $('body').keyup(function(e){
+        if(e.keyCode == 13){
+          console.log(answer)
+          if ($("#answer").val() == answer){
+            setup();
+            $("#answer").val("");
+            console.log("yes");
+          } else {
+            $("#answer").val("");
+            console.log("no");
+          }
+        }
+      })
+    </script>
+  </body>
+</html>
