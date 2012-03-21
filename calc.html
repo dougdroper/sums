@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Demo</title>
     <script src="jquery171.min.js"></script>
+    <script src="sum.js"></script>
     <style type="text/css">
     .body{
       width: 960px;
@@ -39,6 +40,26 @@
       top: -3px;
       left: 20px;
     }
+    div.right {
+      background: url("tick_cross.jpg") 0 0;
+      background-repeat: no-repeat;
+      width: 242px;
+      height: 400px;
+      position: relative;
+      top: -200px;
+      left: 700px;
+      display: none;
+    }
+    div.wrong {
+      background: url("tick_cross.jpg") -250px 0;
+      background-repeat: no-repeat;
+      width: 242px;
+      height: 400px;
+      position: relative;
+      top: -270px;
+      left: 700px;
+      display: none;
+    }
     </style>
   </head>
   <body>
@@ -49,58 +70,17 @@
       <div id="equals">=</div>
       <input type="text" name="answer" id="answer" tabindex=1/>
     </div>
+
+    <div class="right"></div>
+    <div class="wrong"></div>
     <script type="text/javascript">
-      var first, second, answer;
-
-      function getRandomNumber(){
-        return Math.round(Math.random(12) * 10);
-      };
-
-      function getRandomSymbol(){
-        var val = getRandomNumber();
-
-        switch(true){
-          case (val < 4):
-            return "+";
-            break;
-          case (val >= 4 && val < 6):
-            return "*";
-            break;
-          case (val >= 6 && val < 8):
-            return "/";
-            break;
-          default:
-            return "-";
-            break;
-        }
-      }
-
-      function setup(){
-        first = getRandomNumber();
-        second = getRandomNumber();
-        type = getRandomSymbol();
-        answer = eval(first + type + second);
-        if(answer < 0 || answer % 1 != 0 ){
-          setup();
-        }
-        $("#left").html(first);
-        $("#type").html(type);
-        $("#right").html(second);
-      }
-
       setup();
-
-
-      $("#answer").focus();
       $('body').keyup(function(e){
         if(e.keyCode == 13){
           if ($("#answer").val() == answer){
-            setup();
-            $("#answer").val("");
-            console.log("yes");
+            flash("right");
           } else {
-            $("#answer").val("");
-            console.log("no");
+            flash("wrong")
           }
         }
       })
