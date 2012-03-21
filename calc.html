@@ -8,13 +8,36 @@
     .body{
       width: 960px;
       margin: 0 auto;
-      padding: 20px;
     }
     #calc_box{
-      width: 600px;
-      height: 300px;
+      width: 640px;
+      height: 145px;
       border: 2px solid #000;
       padding: 20px;
+    }
+    #left{
+      float: left;
+      font-size: 120px;
+    }
+    #type{
+      float: left;
+      font-size: 120px;
+    }
+    #right{
+      float: left;
+      font-size: 120px;
+    }
+    #equals{
+      float: left;
+      font-size: 120px;
+    }
+    #answer{
+      height: 140px;
+      font-size: 97px;
+      width: 240px;
+      position: relative;
+      top: -3px;
+      left: 20px;
     }
     </style>
   </head>
@@ -30,28 +53,38 @@
       var first, second, answer;
 
       function getRandomNumber(){
-        return Math.round(Math.random(10) * 10);
+        return Math.round(Math.random(12) * 10);
       };
 
       function getRandomSymbol(){
-        switch(getRandomNumber()){
-          case 1
+        var val = getRandomNumber();
+
+        switch(true){
+          case (val < 4):
             return "+";
             break;
-          case 6:
+          case (val >= 4 && val < 6):
             return "*";
+            break;
+          case (val >= 6 && val < 8):
+            return "/";
             break;
           default:
             return "-";
+            break;
         }
       }
 
       function setup(){
         first = getRandomNumber();
         second = getRandomNumber();
-        answer = first + second;
+        type = getRandomSymbol();
+        answer = eval(first + type + second);
+        if(answer < 0 || answer % 1 != 0 ){
+          setup();
+        }
         $("#left").html(first);
-        $("#type").html("+");
+        $("#type").html(type);
         $("#right").html(second);
       }
 
@@ -61,7 +94,6 @@
       $("#answer").focus();
       $('body').keyup(function(e){
         if(e.keyCode == 13){
-          console.log(answer)
           if ($("#answer").val() == answer){
             setup();
             $("#answer").val("");
