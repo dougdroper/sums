@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Socket.io Express Example</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <style type="text/css">
+    .body{
+      width: 960px;
+      margin: 0 auto;
+    }
+    #calc_box{
+      width: 640px;
+      height: 145px;
+      border: 2px solid #000;
+      padding: 20px;
+    }
+    #left{
+      float: left;
+      font-size: 120px;
+    }
+    #type{
+      float: left;
+      font-size: 120px;
+    }
+    #right{
+      float: left;
+      font-size: 120px;
+    }
+    #equals{
+      float: left;
+      font-size: 120px;
+    }
+    #answer{
+      height: 140px;
+      font-size: 97px;
+      width: 240px;
+      position: relative;
+      top: -3px;
+      left: 20px;
+    }
+    div.right {
+      background: url("tick_cross.jpg") 0 0;
+      background-repeat: no-repeat;
+      width: 242px;
+      height: 400px;
+      position: relative;
+      top: -200px;
+      left: 700px;
+      display: none;
+    }
+    div.wrong {
+      background: url("tick_cross.jpg") -250px 0;
+      background-repeat: no-repeat;
+      width: 242px;
+      height: 400px;
+      position: relative;
+      top: -270px;
+      left: 700px;
+      display: none;
+    }
+    </style>
+  </head>
+  <body>
+    <div id="calc_box">
+      <div id="left"></div>
+      <div id="type"></div>
+      <div id="right"></div>
+      <div id="equals">=</div>
+      <input type="text" name="answer" id="answer" tabindex=1/>
+    </div>
+
+    <div class="right"></div>
+    <div class="wrong"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var first, second, type, answer;
+      var socket = io.connect();
+
+      socket.on('welcome', function (data) {
+        first = data.first;
+        second = data.second;
+        type = data.type;
+        answer = eval(first + type + second);
+        $("#left").html(first);
+        $("#type").html(type);
+        $("#right").html(second);
+      });
+
+
+      $("#answer").focus();
+
+      function flash(right_wrong){
+        $("#answer").val("");
+        var right = right_wrong == "right" ? "right" : "wrong";
+        var wrong = right_wrong == "right" ? "wrong" : "right";
+        $("." + wrong).hide();
+        $("." + right).show();
+        $("." + right).fadeOut(1000);
+      }
+
+      $('body').keyup(function(e){
+        if(e.keyCode == 13){
+          if ($("#answer").val() == answer){
+            flash("right");
+          } else {
+            flash("wrong")
+          }
+        }
+      })
+
+    </script>
+  </body>
+</html>
